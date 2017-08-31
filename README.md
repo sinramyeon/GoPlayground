@@ -1,6 +1,6 @@
- :red_circle: [KOR]() :large_blue_circle: [ENG](#)
+ :red_circle: [KOR](./READMEkor.md) :large_blue_circle: [ENG](#)
 
-#Folder
+# Folder
 
 ## [Crawling]()
 go does crawling web
