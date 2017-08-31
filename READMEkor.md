@@ -1,4 +1,4 @@
- :red_circle: [KOR](#) :large_blue_circle: [ENG]()
+ :red_circle: [KOR](#) :large_blue_circle: [ENG](./README.md)
 
 # 폴더
 
