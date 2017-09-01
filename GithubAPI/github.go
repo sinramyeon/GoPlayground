@@ -3,6 +3,7 @@ package GithubAPI
 import (
 	"context"
 	"log"
+	"os"
 	"time"
 
 	"github.com/google/go-github/github"
@@ -25,8 +26,7 @@ func ConnectGithub() (context.Context, *github.Client) {
 		/*Admonition
 		PLEAAAAAAAAAAAAASE DO NOT UPLOAD YOUR OAUTH KEY OR TOKEN TO GITHUB!!!!
 		*/
-		//&oauth2.Token{AccessToken: os.Getenv("GithubAPI")},
-		&oauth2.Token{AccessToken: "3f9da687a84a48f320ec0f0cd91478e76dfc815d"},
+		&oauth2.Token{AccessToken: os.Getenv("GithubAPI")},
 	)
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
