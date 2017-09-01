@@ -14,6 +14,8 @@ use slack api with go
 plays with string with go(Why Go dosen't support these features?)
 ## [WeatherAPI](/WeatherAPI)
 Get weather with go
+## [Twitter](/Twitter)
+tweet with go
 
 # Requirements
 ```
