@@ -8,7 +8,7 @@ import (
 	"github.com/sclevine/agouti"
 )
 
-func SeleniumTest() {
+func SeleniumLoginTest() {
 
 	// 1. First, You should install agouti series.
 	//For macOs
@@ -23,44 +23,63 @@ func SeleniumTest() {
 	I used to use chrome, but selenium is best for firefox.
 	But no IE please.
 	*/
+
+	//Get chrome driver(...or your browser driver)
 	driver := agouti.ChromeDriver()
+	//Start browser
 	if err := driver.Start(); err != nil {
 		log.Fatalln("[ERROR]", err)
 	}
-
-	defer recover()
 	defer driver.Stop()
 
+	//Make new page with browser
 	page, err := driver.NewPage(agouti.Browser("phantomjs"))
 	if err != nil {
 		log.Fatalln("[ERROR]", err)
 	}
 
-	if err := page.Navigate("http://ione.interpark.com/"); err != nil {
+	//Go into some page
+	if err := page.Navigate("somewhere"); err != nil {
 		log.Fatalln("[ERROR]", err)
 	}
 
-	ID := ""
-	PW := ""
-	page.FindByID("Username").SendKeys(ID)
-	page.FindByID("Password").SendKeys(PW)
+	// Test Login
+	ID := "your ID"
+	PW := "your PW"
+	page.FindByID("Some #id").SendKeys(ID)
+	page.FindByID("Some #pw").SendKeys(PW)
 
-	page.FindByClass("loginSubmit").Click()
+	page.FindByClass(".loginbutton").Click()
 
-	if err := page.Navigate("http://ione.interpark.com/gw/app/bult/bbs00000.nsf/wviwnotice?ReadViewEntries&start=1&count=14&restricttocategory=03&page=1&&_=1504081645868"); err != nil {
+	if err := page.Navigate("somewhere"); err != nil {
 		log.Fatalln("[ERROR]", err)
 	}
 
+	// You can get page cookies to get some token or information
 	cookie, err := page.GetCookies()
 	if err != nil {
 		log.Fatalln("[ERROR]", err)
 	}
 
 	for _, v := range cookie {
-		if strings.Contains(v.Name, "LtpaToken") {
-			fmt.Println(v)
+		if strings.Contains(v.Name, "value you want to find") {
 			fmt.Println(v.Value)
 		}
 	}
 
+	// Or just see html
+	html, err := page.HTML()
+	if err != nil {
+		log.Fatalln("[ERROR]", err)
+	}
+	fmt.Println(html)
+
+	// Or took screenshot
+	page.Screenshot("/save.jpg")
+
+	// Or move your mouse to make something special!
+	err = page.MoveMouseBy(32, 45)
+	if err != nil {
+		log.Fatalln("[ERROR]", err)
+	}
 }
