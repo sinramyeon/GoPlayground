@@ -139,7 +139,7 @@ func CallAPI() []byte {
 
 	jsonreq, err := json.Marshal(WeatherRequest{
 
-		UserId:         "sh8kim@interpark.com",
+		UserId:         "가입한 아이디(이메일)을 입력하시면 됩니다.",
 		AcceptLanguage: "ko_KR",
 		Date:           time.Now(),
 		Accept:         "application/json",
@@ -164,7 +164,7 @@ func ReqWeather(url string, jsonreq []byte) []byte {
 	// 2. skplanet에서 받은 appKey를 등록한다
 	// 주의!!!!!!!!!!!!!!! 제발 appKey를 Github 등에 올리지 마세요!!!!!!!!!!
 	// 제발!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	req.Header.Set("appkey", "0b37b2f4-0d8b-3cac-b53c-20218fe07af8")
+	req.Header.Set("appkey", "appkey")
 	client := &http.Client{}
 
 	// 3. 값을 받아온다
