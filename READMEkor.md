@@ -14,6 +14,12 @@
 고에서 문자열을 가지고 놀아 봅니다.
 ## [WeatherAPI](/WeatherAPI)
 고에서 날씨를 갖고 옵니다.
+- [x] SK planet developer api
+- [ ] dark sky api
+## [MapAPI](/MapAPI)
+고에서 주소를 다룹니다.
+- [x] 다음지도api
+- [ ] 네이버지도api
 ## [Twitter](/Twitter)
 고로도 트잉여는 놓을 수 없습니다.
 

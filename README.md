@@ -14,6 +14,12 @@ use slack api with go
 plays with string with go(Why Go dosen't support these features?)
 ## [WeatherAPI](/WeatherAPI)
 Get weather with go
+- [x] SK planet developer api
+- [ ] dark sky api
+## [MapAPI](/MapAPI)
+Get Map and Address with go
+- [x] Daum map api
+- [ ] Naver map api
 ## [Twitter](/Twitter)
 tweet with go
 
