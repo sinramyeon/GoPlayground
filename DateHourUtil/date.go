@@ -1,7 +1,6 @@
-package main
+package DateHourUtil
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -69,9 +68,4 @@ func (d Date) CalcDate(years, months, days int) Date {
 
 	return Date{Year: d.Year + years, Month: d.Month + months, Day: d.Day + days}
 
-}
-
-func main() {
-	a := Toady()
-	fmt.Println(a)
 }
