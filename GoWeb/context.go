@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/json"
 	"encoding/xml"
+	"html/template"
 	"net/http"
+	"path/filepath"
 )
 
 type Context struct {
@@ -53,4 +55,19 @@ func (c *Context) RenderXml(v interface{}) {
 
 	}
 
+}
+
+var templates = map[string]*template.Template{}
+
+func (c *Context) RenderTemplate(path string, v interface{}) {
+	// path에 해당하는 템플릿이 있는지 확인
+	t, ok := templates[path]
+	if !ok {
+		// path에 해당하는 템플릿이 없으면 템플릿 객체 생성
+		t = template.Must(template.ParseFiles(filepath.Join(".", path)))
+		templates[path] = t
+	}
+
+	// v 값을 템플릿 내부로 전달하여 만들어진 최종 결과를 c.ResponseWriter에 출력
+	t.Execute(c.ResponseWriter, v)
 }

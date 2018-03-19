@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type User struct {
 	Id        string
@@ -12,7 +15,8 @@ func main() {
 	s := NewServer()
 
 	s.HandleFunc("GET", "/", func(c *Context) {
-		fmt.Fprintln(c.ResponseWriter, "welcome!")
+
+		c.RenderTemplate("/public/index.html", map[string]interface{}{"time": time.Now()})
 	})
 
 	s.HandleFunc("GET", "/about", func(c *Context) {
