@@ -47,3 +47,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	s.startHandler(c)
 }
+
+func (s *Server) Use(middlewares ...Middleware) {
+	s.middlewares = append(s.middlewares, middlewares...)
+}

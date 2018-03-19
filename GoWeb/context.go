@@ -71,3 +71,8 @@ func (c *Context) RenderTemplate(path string, v interface{}) {
 	// v 값을 템플릿 내부로 전달하여 만들어진 최종 결과를 c.ResponseWriter에 출력
 	t.Execute(c.ResponseWriter, v)
 }
+
+func (c *Context) Redirect(url string) {
+
+	http.Redirect(c.ResponseWriter, c.Request, url, http.StatusMovedPermanently)
+}
