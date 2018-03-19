@@ -6,14 +6,14 @@ import (
 )
 
 type router struct {
-	handlers map[string]map[string]http.HandlerFunc
+	handlers map[string]map[string]HandlerFunc
 }
 
-func (r *router) HandleFunc(method, pattern string, h http.HandlerFunc) {
+func (r *router) HandleFunc(method, pattern string, h HandlerFunc) {
 
 	m, ok := r.handlers[method]
 	if !ok {
-		m = make(map[string]http.HandlerFunc)
+		m = make(map[string]HandlerFunc)
 		r.handlers[method] = m
 	}
 
@@ -24,8 +24,19 @@ func (r *router) HandleFunc(method, pattern string, h http.HandlerFunc) {
 func (r *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 	for pattern, handler := range r.handlers[req.Method] {
-		if ok, _ := match(pattern, req.URL.Path); ok {
-			handler(w, req)
+		if ok, params := match(pattern, req.URL.Path); ok {
+
+			c := Context{
+				Params:         make(map[string]interface{}),
+				ResponseWriter: w,
+				Request:        req,
+			}
+
+			for k, v := range params {
+				c.Params[k] = v
+			}
+
+			handler(&c)
 			return
 		}
 	}
