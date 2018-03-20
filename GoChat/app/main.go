@@ -26,6 +26,9 @@ func main() {
 	// 라우터 생성
 	router := httprouter.New()
 
+	// 소셜 로그인용
+	router.GET("/auth/:action/:provider", loginHandler)
+
 	// 핸들러 정의
 	router.GET("/", func(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 		// 렌더러를 사용하여 템플릿 렌더링
@@ -47,6 +50,7 @@ func main() {
 
 	// negroni 미들웨어 생성
 	n := negroni.Classic()
+	n.Use(LoginRequired("/login", "/auth")) // /login과 /auth로 시작하는 URL이면 인증 처리를 하지 않는다.
 	store := cookiestore.New([]byte(sessionSecret))
 	n.Use(sessions.Sessions(sessionKey, store))
 
