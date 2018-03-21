@@ -8,9 +8,11 @@ import (
 	"github.com/goincremental/negroni-sessions/cookiestore"
 	"github.com/julienschmidt/httprouter"
 	"github.com/unrolled/render"
+	"gopkg.in/mgo.v2"
 )
 
 var renderer *render.Render
+var mongoSession *mgo.Session
 
 const (
 	sessionKey    = "session"
@@ -20,6 +22,13 @@ const (
 func init() {
 	// 렌더러 생성
 	renderer = render.New()
+
+	s, err := mgo.Dial("mongodb://localhost")
+	if err != nil {
+		panic(err)
+	}
+
+	mongoSession = s
 }
 
 func main() {
@@ -47,6 +56,11 @@ func main() {
 		sessions.GetSession(r).Delete(currentUserKey)
 		http.Redirect(w, r, "/login", http.StatusFound)
 	})
+
+	router.POST("/rooms", createRoom)
+	router.GET("/rooms", retrieveRooms)
+
+	router.GET("/rooms/:id/messages", retrieveMessages)
 
 	// negroni 미들웨어 생성
 	n := negroni.Classic()
