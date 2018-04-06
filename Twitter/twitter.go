@@ -3,6 +3,8 @@ package Twitter
 import (
 	"fmt"
 	"log"
+	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -183,6 +185,119 @@ func GetXylitolMusic(client *twitter.Client) {
 	for _, tweet := range URL {
 
 		client.Statuses.Update(tweet, nil)
+	}
+
+}
+
+// Get today's his greatest music link
+func TodayXylitol(client *twitter.Client) {
+
+	// for today's tweet
+	var TodayTweets []string
+
+	// get what time is it now
+	TimeNow := time.Now().Local().Add(time.Hour * time.Duration(-1))
+	_, _, Day := TimeNow.Date()
+
+	// get his recent 500 tweets
+	// he ussually tweets 100 to 500 in day
+	usertweets, _, _ := client.Timelines.UserTimeline(&twitter.UserTimelineParams{
+		Count:           500,
+		ScreenName:      "XylitoLdrink",
+		IncludeRetweets: twitter.Bool(false),
+	})
+
+	for _, v := range usertweets {
+
+		// get when he wrotes this tweet
+		TweetTime, _ := v.CreatedAtTime()
+		TweetTime.Local()
+		_, _, XDay := TweetTime.Date()
+
+		// if the day was today
+		if Day == XDay {
+
+			if strings.Contains(v.Text, "https") || strings.Contains(v.Text, "-") {
+				// we must get lid of ask.fm links
+				// if it was usual tweet, it contains korean. we should get rid of it too.
+				r := regexp.MustCompile(`[가-힣]`)
+				matches := r.FindAllString(v.Text, -1)
+
+				if len(matches) == 0 {
+					TodayTweets = append(TodayTweets, v.Text)
+				}
+			}
+		}
+	}
+
+	for _, tweet := range TodayTweets {
+
+		client.Statuses.Update(tweet, nil)
+	}
+
+}
+
+// return bool pointer
+func Bool(v bool) *bool {
+	ptr := new(bool)
+	*ptr = v
+	return ptr
+}
+
+// float to int converter
+func FloatToInt(f float64) int {
+
+	var y int = int(f)
+	return y
+}
+
+// get d-day and tweet!
+func D_Day(client *twitter.Client) {
+
+	// 1. get seoul's local time
+	timeNow := time.Now().Local()
+	seouldate, _ := time.LoadLocation("Asia/Seoul")
+
+	// 2. set due date.
+	dueDate := time.Date(int(2017), time.December, int(15), int(0), int(0), int(0), int(0), seouldate)
+
+	// 3. get difference
+	diff := timeNow.Sub(dueDate)
+
+	d_day := int(diff.Hours()/24) - 1
+
+	if d_day != 10 || d_day != 9 || d_day != 8 || d_day != 7 || d_day != 6 || d_day != 5 || d_day != 4 || d_day != 3 || d_day != 2 || d_day != 1 || d_day != 0 {
+
+		SendTweet(client, `[알림]
+			팔군 @TM_PalGooN 님의 퇴사일이 `+strconv.Itoa(d_day)+"일 남았습니다.")
+	} else {
+
+		SendTweet(client, `[경축]
+				팔군 @TM_PalGooN 님!
+				퇴사일이 `+strconv.Itoa(d_day)+"일 남았습니다. 힘내세요!")
+	}
+}
+
+// auto search and retweet
+func SearchAndRT(client *twitter.Client, s string) {
+
+	// search some tweet with specific words
+	search, _, _ := client.Search.Tweets(&twitter.SearchTweetParams{
+		Query: s,
+		Count: 100,
+	})
+
+	// if it contains media or url, and has minimum 5rt, retweet this
+	for _, v := range search.Statuses {
+
+		rtcount := v.RetweetCount
+		url := len(v.Entities.Urls)
+		media := len(v.Entities.Media)
+
+		if rtcount > 5 && (url != 0 || media != 0) {
+			client.Statuses.Retweet(v.ID, &twitter.StatusRetweetParams{})
+		}
+
 	}
 
 }
