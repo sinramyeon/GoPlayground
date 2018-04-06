@@ -1,0 +1,22 @@
+{
+    "Postgres": {
+        "Host" :"localhost",
+        "User" : "hellofresh",
+        "Password" : "hellofresh",
+        "Database" : "hellofresh"
+    },
+   
+    "Redis" : {
+        "URL" : "localhost:6379",
+        "Pool": 20
+    },
+
+    "Mongo": {
+        "Url" : "localhost:27017",
+        "Pool" : 20
+    },
+
+    "Secret" : {
+        "Key" : "hellofresh"
+    }
+}

@@ -1,0 +1,11 @@
+# Binaries
+*.exe~
+*.dll
+
+
+# Test binaries
+*.test
+
+# Log, Debug ...
+*.log
+debug
